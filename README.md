@@ -10,7 +10,7 @@ I again become too ambitious these days to believe in my self as a qualified gam
 
 I've tried 3 times to develop a game of my own, correspondingly in 2007, 2010 and 2014. I've been using Flash, GameMaker and Unity. None of these trials succeeded.
 
-The first failure with Flash was mainly because I couldn't code. In 2007 I was too young and it almost killed me to learn Flash and ActionScript. The second one, similarly, also results from my lack of coding skills. Although I found GameMaker is absolutely a better choice for the game developer. Still I learned some basic concepts like sprite, collision detection and camera.
+The first failure with Flash was mainly because I couldn't code. In 2007 I was too young and it almost killed me to learn Flash and ActionScript. The second one, similarly, also results from my lack of coding skills. Although I found GameMaker is absolutely a better choice for the game development. Still I learned some basic concepts like sprite, collision detection and camera.
 
 Honostly speaking, the third failure with Unity is not my fault, at least not all of my fault. Unity is over-complicated. This may works fine for some artist-background game developers. But it is really annoying to me. My mind is shaped as a programmer and I simply can't settle myself when working with such an complicated, ill-moduled system.
 
