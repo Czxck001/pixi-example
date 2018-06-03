@@ -1,4 +1,5 @@
 "use strict";
+const path = require("path");
 
 const { keyboard } = require("./utils/keyboard");
 const {
@@ -40,10 +41,11 @@ let platforms = undefined;
 let blocks = undefined;
 
 // Resources
-const people_png = "images/small_strange_people.png",
-      soft_platform_png = "images/soft_platform.png",
-      hard_platform_png = "images/hard_platform.png",
-      brick_png = "images/brick.png";
+const resources_dir = "resources"
+const people_png = path.join(resources_dir, "small_strange_people.png"),
+      soft_platform_png = path.join(resources_dir, "soft_platform.png"),
+      hard_platform_png = path.join(resources_dir, "hard_platform.png"),
+      brick_png = path.join(resources_dir, "brick.png");
 
 // Use Pixi's built-in `loader` object to load an image
 PIXI.loader
