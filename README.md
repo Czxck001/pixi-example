@@ -1,6 +1,6 @@
 # pixi-example
 
-My first game project using [PIXI.js](http://www.pixijs.com/). Currently it's a old-styled and incredibly ugly platformer.
+My first game project using [PIXI.js](http://www.pixijs.com/). Currently it's an old-styled and incredibly ugly platformer.
 
  <img align="right" src="imgs/demo-scene.png">
 
