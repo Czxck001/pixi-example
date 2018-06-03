@@ -6,23 +6,6 @@ function updateV() {
   this.vy += this.ay;
 }
 
-
-function clone() {
-  // return Object.assign({}, this};
-  let cloned = {};
-
-  cloned.x = this.x;
-  cloned.width = this.width;
-  cloned.y = this.y;
-  cloned.height = this.height;
-
-  cloned.vx = this.vx;
-  cloned.vy = this.vy;
-
-  return cloned;
-}
-
-
 function predict() {
   let next = {};
   next.x = this.x + this.vx;
@@ -34,10 +17,11 @@ function predict() {
   return next;
 }
 
-
-function updateP() {
-  this.x += this.vx;
-  this.y += this.vy;
+function update(predicted) {
+  this.x = predicted.x;
+  this.y = predicted.y;
+  this.vx = predicted.vx;
+  this.vy = predicted.vy;
 }
 
 
@@ -49,7 +33,6 @@ function equipPhysics(a) {
   a.vy = 0;
 
   a.updateV = updateV;
-  a.clone = clone;
   a.predict = predict;
-  a.updateP = updateP;
+  a.update = update;
 }

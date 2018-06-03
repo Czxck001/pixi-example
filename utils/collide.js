@@ -33,7 +33,7 @@ function overlapY(a, b) {
 function hitTheTop(a, at, b) {
   return (a.d <= b.u && at.d > b.u
           || a.d < b.u && at.d == b.u)
-         && overlapX(a, b);
+         && (overlapX(a, b) || overlapX(at, b));
 }
 
 function onTopOf(a, b) {
@@ -44,17 +44,17 @@ function onTopOf(a, b) {
 function hitTheBottom(a, at, b) {
   return (a.u >= b.d && at.u < b.d
           || a.u > b.d && at.u == b.d)
-         && overlapX(a, b);
+         && (overlapX(a, b) || overlapX(at, b));
 }
 
 function hitTheLeft(a, at, b) {
   return (a.r <= b.l && at.r > b.l
           || a.r < b.l && at.r == b.l)
-         && overlapY(a, b);
+         && (overlapY(a, b) || overlapY(at, b));
 }
 
 function hitTheRight(a, at, b) {
   return (a.l >= b.r && at.l < b.r
           || a.l > b.r && at.l == b.r)
-         && overlapY(a, b);
+         && (overlapY(a, b) || overlapY(at, b));
 }

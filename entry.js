@@ -115,15 +115,13 @@ function gameLoop() {
 function updateState() {
   people.updateV();
 
-  let p = people.clone();
-  let pt = people.predict();
+  const p = people;
+  const pt = people.predict();
 
-  people.updateP();
-
+  let bottom;
   if (people.toFall) {
     people.toFall = false;
   } else {
-    let bottom;
     for (let platform of platforms) {
       if (hitTheTop(p, pt, platform)) {
         bottom = platform;
@@ -131,8 +129,8 @@ function updateState() {
       }
     }
     if (bottom) {
-      people.y = bottom.y - people.height;
-      people.vy = 0;
+      pt.y = bottom.y - pt.height;
+      pt.vy = 0;
     }
   }
 
@@ -144,8 +142,8 @@ function updateState() {
     }
   }
   if (top) {
-    people.y = top.y + top.height;
-    people.vy = 0;
+    pt.y = top.y + top.height;
+    pt.vy = 0;
   }
 
   let right;
@@ -156,7 +154,7 @@ function updateState() {
     }
   }
   if (right) {
-    people.x = right.x - people.width;
+    pt.x = right.x - pt.width;
   }
 
   let left;
@@ -167,8 +165,10 @@ function updateState() {
     }
   }
   if (left) {
-    people.x = left.x + left.width;
+    pt.x = left.x + left.width;
   }
+
+  p.update(pt);
 }
 
 function onTheSoftGround() {
