@@ -140,57 +140,39 @@ function updateState() {
   // Delayed prediction, waiting for the fix by collision check.
   const pt = people.predict();
 
-  // Collision check in each direction:
+  // Check collection in each direction.
   // If collision is found in one direction,
   // the prediction will be fixed at once.
-  let bottom;
+
+  // TODO: Simplify the collection fix by polymorphism.
   if (people.toFall) {
     people.toFall = false;
   } else {
-    for (let platform of platforms) {
-      if (hitTheTop(p, pt, platform)) {
-        bottom = platform;
-        break;
+    for (let bottom of platforms) {
+      if (hitTheTop(p, pt, bottom)) {
+        pt.y = bottom.y - pt.height;
+        pt.vy = 0;
       }
     }
-    if (bottom) {
-      pt.y = bottom.y - pt.height;
+  }
+
+  for (let top of blocks) {
+    if (hitTheBottom(p, pt, top)) {
+      pt.y = top.y + top.height;
       pt.vy = 0;
     }
   }
 
-  let top;
-  for (let block of blocks) {
-    if (hitTheBottom(p, pt, block)) {
-      top = block;
-      break;
+  for (let right of blocks) {
+    if (hitTheLeft(p, pt, right)) {
+      pt.x = right.x - pt.width;
     }
-  }
-  if (top) {
-    pt.y = top.y + top.height;
-    pt.vy = 0;
   }
 
-  let right;
-  for (let block of blocks) {
-    if (hitTheLeft(p, pt, block)) {
-      right = block;
-      break;
+  for (let left of blocks) {
+    if (hitTheRight(p, pt, left)) {
+      pt.x = left.x + left.width;
     }
-  }
-  if (right) {
-    pt.x = right.x - pt.width;
-  }
-
-  let left;
-  for (let block of blocks) {
-    if (hitTheRight(p, pt, block)) {
-      left = block;
-      break;
-    }
-  }
-  if (left) {
-    pt.x = left.x + left.width;
   }
 
   p.update(pt);
