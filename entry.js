@@ -12,13 +12,18 @@ const JUMP_INITIAL_SPEED = 3;
 //Create a container object called the `stage`
 let stage = new PIXI.Container();
 
-let WIDTH = 160, HEIGHT = 102;
+let WIDTH = 160, HEIGHT = 104;
+
+const BACKGROUND_COLOR = 0x1f3d7a;
+const OBJECT_TINT = 0xa3a3c2;
 
 //Create the renderer
 let renderer = PIXI.autoDetectRenderer(
   WIDTH, HEIGHT,
-  {antialias: false, transparent: false, resolution: 2}
+  {antialias: false, transparent: false, resolution: 2,
+   backgroundColor: BACKGROUND_COLOR}
 );
+
 //Add the canvas to the HTML document
 document.body.appendChild(renderer.view);
 
@@ -56,6 +61,12 @@ function setup() {
   let bricks = Array(2).fill().map(
     () => new PIXI.Sprite(PIXI.loader.resources[brick_png].texture)
   );
+
+  let setTint = (sprite) => {sprite.tint = OBJECT_TINT};
+
+  soft_platforms.forEach(setTint);
+  hard_platforms.forEach(setTint);
+  bricks.forEach(setTint);
 
   soft_platforms[0].x = 32;
   soft_platforms[0].y = 40;
