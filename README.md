@@ -6,7 +6,7 @@ My first game project using [PIXI.js](http://www.pixijs.com/). Currently it's an
 
 ## Why game?
 
-I again become too ambitious these days to believe in my self as a qualified game developer. This time my confidence comes from the two-year experience as a software engineer since my graduation.
+I again become too ambitious these days to believe in myself as a qualified game developer. This time my confidence comes from the two-year experience as a software engineer since my graduation.
 
 I've tried 3 times to develop a game of my own, correspondingly in 2007, 2010 and 2014. I've been using Flash, GameMaker and Unity. None of these trials succeeded.
 
