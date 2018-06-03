@@ -3,6 +3,7 @@ const {
   hitTheTop, onTopOf, hitTheBottom, hitTheLeft, hitTheRight
 } = require("./utils/collide.js");
 const { equipPhysics } = require("./utils/physics.js");
+const { makeBoundaries } = require("./utils/scroll.js");
 
 const HORIZONTAL_SPEED = 1;
 const GRAVITY_ACCELERATION = 0.1;
@@ -11,9 +12,11 @@ const JUMP_INITIAL_SPEED = 3;
 //Create a container object called the `stage`
 let stage = new PIXI.Container();
 
+let WIDTH = 160, HEIGHT = 102;
+
 //Create the renderer
 let renderer = PIXI.autoDetectRenderer(
-  256, 256,
+  WIDTH, HEIGHT,
   {antialias: false, transparent: false, resolution: 2}
 );
 //Add the canvas to the HTML document
@@ -47,40 +50,45 @@ function setup() {
   soft_platforms = Array(3).fill().map(
     () => new PIXI.Sprite(PIXI.loader.resources[soft_platform_png].texture)
   );
-  hard_platforms = Array(4).fill().map(
+  let hard_platforms = Array(3).fill().map(
     () => new PIXI.Sprite(PIXI.loader.resources[hard_platform_png].texture)
   );
-  bricks = Array(2).fill().map(
+  let bricks = Array(2).fill().map(
     () => new PIXI.Sprite(PIXI.loader.resources[brick_png].texture)
   );
 
   soft_platforms[0].x = 32;
-  soft_platforms[0].y = 72;
+  soft_platforms[0].y = 40;
   soft_platforms[1].x = 32;
-  soft_platforms[1].y = 96;
+  soft_platforms[1].y = 72;
   soft_platforms[2].x = 96;
-  soft_platforms[2].y = 72;
+  soft_platforms[2].y = 40;
 
-  for (let i = 0; i < 3; ++i) {
-    hard_platforms[i].x = (i + 1) * 32;
-    hard_platforms[i].y = 128;
-  }
-  hard_platforms[3].x = 96;
-  hard_platforms[3].y = 96;
+  hard_platforms[0].x = 32;
+  hard_platforms[0].y = 96;
+  hard_platforms[1].x = 96;
+  hard_platforms[1].y = 96;
+  hard_platforms[2].x = 96;
+  hard_platforms[2].y = 72;
 
   bricks[0].x = 0;
-  bricks[0].y = 128 - (32 - 8);
+  bricks[0].y = 96 - (32 - 8);
   bricks[1].x = 128;
-  bricks[1].y = 128 - (32 - 8);
+  bricks[1].y = 96 - (32 - 8);
 
-  blocks = hard_platforms.concat(bricks);
+  let boundaries = makeBoundaries(WIDTH, HEIGHT);
+
+  blocks = hard_platforms.concat(bricks).concat(boundaries);
   platforms = soft_platforms.concat(blocks);
 
   //Add the sprite to the stage
-  stage.addChild(people);
+  let sprites = [people]
+    .concat(soft_platforms)
+    .concat(hard_platforms)
+    .concat(bricks)
 
-  for (let platform of platforms) {
-    stage.addChild(platform);
+  for (let sprite of sprites) {
+    stage.addChild(sprite);
   }
 
   setupKeys(people);
