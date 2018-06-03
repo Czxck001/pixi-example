@@ -2,6 +2,7 @@ exports.makeBoundaries = makeBoundaries;
 
 
 function makeBoundaries(width, height) {
+  // Create sprite-like representations for boundaries
   let boundaries = [];
 
   boundaries[0] = {x: 0, width: width, y: 0, height: 0};  // up

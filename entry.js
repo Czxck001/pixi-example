@@ -1,3 +1,5 @@
+"use strict";
+
 const { keyboard } = require("./utils/keyboard");
 const {
   hitTheTop, onTopOf, hitTheBottom, hitTheLeft, hitTheRight
@@ -5,34 +7,45 @@ const {
 const { equipPhysics } = require("./utils/physics.js");
 const { makeBoundaries } = require("./utils/scroll.js");
 
+
+// Using global constants to set the parameters of scene in agility.
 const HORIZONTAL_SPEED = 1;
 const GRAVITY_ACCELERATION = 0.1;
 const JUMP_INITIAL_SPEED = 3;
-
-//Create a container object called the `stage`
-let stage = new PIXI.Container();
-
-let WIDTH = 160, HEIGHT = 104;
+const WIDTH = 160, HEIGHT = 104;
 
 const BACKGROUND_COLOR = 0x1f3d7a;
 const OBJECT_TINT = 0xa3a3c2;
 
-//Create the renderer
+// Using global variables to accelerate the deveoplment process.
+// TODO: Modulize to avoid using global variables.
+
+// Create a container object called the `stage`
+let stage = new PIXI.Container();
+
+// Create the renderer
 let renderer = PIXI.autoDetectRenderer(
   WIDTH, HEIGHT,
   {antialias: false, transparent: false, resolution: 2,
    backgroundColor: BACKGROUND_COLOR}
 );
 
-//Add the canvas to the HTML document
+// Add the canvas to the HTML document
 document.body.appendChild(renderer.view);
 
-people_png = "images/small_strange_people.png";
-soft_platform_png = "images/soft_platform.png";
-hard_platform_png = "images/hard_platform.png";
-brick_png = "images/brick.png";
+// Core objects in scene.
+let people = undefined;
+let soft_platforms = undefined;
+let platforms = undefined;
+let blocks = undefined;
 
-//Use Pixi's built-in `loader` object to load an image
+// Resources
+const people_png = "images/small_strange_people.png",
+      soft_platform_png = "images/soft_platform.png",
+      hard_platform_png = "images/hard_platform.png",
+      brick_png = "images/brick.png";
+
+// Use Pixi's built-in `loader` object to load an image
 PIXI.loader
   .add(people_png)  // 8 * 16
   .add(soft_platform_png)  // 32 * 4
@@ -40,16 +53,16 @@ PIXI.loader
   .add(brick_png)  // 32 * 32
   .load(setup);
 
-//This `setup` function will run when the image has loaded
+// This `setup` function will run when the image has loaded
 function setup() {
-  //Create the sprites from the texture
+  // Create the sprites from the texture
   people = new PIXI.Sprite(
     PIXI.loader.resources[people_png].texture
   );
 
-  people.x = 32;
-
+  // Make people a "physics" one.
   equipPhysics(people);
+  people.x = 32;
   people.ay = GRAVITY_ACCELERATION;
 
   soft_platforms = Array(3).fill().map(
@@ -62,12 +75,7 @@ function setup() {
     () => new PIXI.Sprite(PIXI.loader.resources[brick_png].texture)
   );
 
-  let setTint = (sprite) => {sprite.tint = OBJECT_TINT};
-
-  soft_platforms.forEach(setTint);
-  hard_platforms.forEach(setTint);
-  bricks.forEach(setTint);
-
+  // Layout the objects.
   soft_platforms[0].x = 32;
   soft_platforms[0].y = 40;
   soft_platforms[1].x = 32;
@@ -87,12 +95,21 @@ function setup() {
   bricks[1].x = 128;
   bricks[1].y = 96 - (32 - 8);
 
+  // Set tints.
+  let setTint = (sprite) => {sprite.tint = OBJECT_TINT};
+
+  soft_platforms.forEach(setTint);
+  hard_platforms.forEach(setTint);
+  bricks.forEach(setTint);
+
+  // Create boundaries
   let boundaries = makeBoundaries(WIDTH, HEIGHT);
 
+  // Assign core global collections
   blocks = hard_platforms.concat(bricks).concat(boundaries);
   platforms = soft_platforms.concat(blocks);
 
-  //Add the sprite to the stage
+  // Add the spritse to the stage
   let sprites = [people]
     .concat(soft_platforms)
     .concat(hard_platforms)
@@ -102,7 +119,10 @@ function setup() {
     stage.addChild(sprite);
   }
 
+  // Bind the hero with the keyboard.
   setupKeys(people);
+
+  // Enter game loop.
   gameLoop();
 }
 
@@ -116,8 +136,13 @@ function updateState() {
   people.updateV();
 
   const p = people;
+
+  // Delayed prediction, waiting for the fix by collision check.
   const pt = people.predict();
 
+  // Collision check in each direction:
+  // If collision is found in one direction,
+  // the prediction will be fixed at once.
   let bottom;
   if (people.toFall) {
     people.toFall = false;
@@ -180,10 +205,10 @@ function onTheGround() {
 }
 
 function setupKeys(p) {
-  let left = keyboard(37),
-      up = keyboard(38),
-      right = keyboard(39),
-      down = keyboard(40);
+  const left = keyboard(37),
+        up = keyboard(38),
+        right = keyboard(39),
+        down = keyboard(40);
 
   left.press = () => {
     p.vx = -HORIZONTAL_SPEED;
