@@ -22,14 +22,14 @@ Actually, PIXI.js is not a game engine or game IDE. It is merely a wrapper of We
 
 ## Prerequisites
 
-```
-npm
-```
+[npm](https://www.npmjs.com/)
+
+[Git LFS](https://git-lfs.github.com/)
 
 ## Installation
 
 ```
-git clone https://github.com/Czxck001/pixi-example
+git lfs clone https://github.com/Czxck001/pixi-example
 cd pixi-example
 npm install
 ```
@@ -42,11 +42,11 @@ npm start
 
 ## Game Help
 
-Use left and right to move horizontally.
+Use ← and → to move horizontally.
 
-Use up to jump.
+Use ↑ to jump.
 
-Use down to drop off from soft platforms.
+Use ↓ to drop off from soft platforms.
 
 ## Features
 
