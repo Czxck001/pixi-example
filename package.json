@@ -1,20 +1,21 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "pixi-example",
+  "version": "0.0.1",
+  "description": "Czxck001's demo for PIXI.js",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/Czxck001/pixi-example",
   "keywords": [
+    "PIXI.js",
     "Electron",
     "quick",
     "start",
     "tutorial",
     "demo"
   ],
-  "author": "GitHub",
+  "author": "Czxck001",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^2.0.0"
