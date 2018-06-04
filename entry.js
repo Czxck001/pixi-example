@@ -49,18 +49,16 @@ const people_png = path.join(resources_dir, "small_strange_people.png"),
 
 // Use Pixi's built-in `loader` object to load an image
 PIXI.loader
-  .add(people_png)  // 8 * 16
-  .add(soft_platform_png)  // 32 * 4
-  .add(hard_platform_png)  // 32 * 8
-  .add(brick_png)  // 32 * 32
+  .add('people', people_png)  // 8 * 16
+  .add('soft_platform', soft_platform_png)  // 32 * 4
+  .add('hard_platform', hard_platform_png)  // 32 * 8
+  .add('brick', brick_png)  // 32 * 32
   .load(setup);
 
 // This `setup` function will run when the image has loaded
-function setup() {
+function setup(loader, resources) {
   // Create the sprites from the texture
-  people = new PIXI.Sprite(
-    PIXI.loader.resources[people_png].texture
-  );
+  people = new PIXI.Sprite(resources.people.texture);
 
   // Make people a "physics" one.
   equipPhysics(people);
@@ -68,13 +66,13 @@ function setup() {
   people.ay = GRAVITY_ACCELERATION;
 
   soft_platforms = Array(3).fill().map(
-    () => new PIXI.Sprite(PIXI.loader.resources[soft_platform_png].texture)
+    () => new PIXI.Sprite(resources.soft_platform.texture)
   );
   let hard_platforms = Array(3).fill().map(
-    () => new PIXI.Sprite(PIXI.loader.resources[hard_platform_png].texture)
+    () => new PIXI.Sprite(resources.hard_platform.texture)
   );
   let bricks = Array(2).fill().map(
-    () => new PIXI.Sprite(PIXI.loader.resources[brick_png].texture)
+    () => new PIXI.Sprite(resources.brick.texture)
   );
 
   // Layout the objects.
