@@ -1,4 +1,5 @@
 "use strict";
+const fs = require("fs");
 const path = require("path");
 
 const { keyboard } = require("./utils/keyboard");
@@ -6,7 +7,7 @@ const {
   hitTheTop, onTopOf, hitTheBottom, hitTheLeft, hitTheRight
 } = require("./utils/collide.js");
 const { equipPhysics } = require("./utils/physics.js");
-const { makeBoundaries } = require("./utils/scroll.js");
+const { layout, makeBoundaries } = require("./utils/scroll.js");
 
 
 // Using global constants to set the parameters of scene in agility.
@@ -65,42 +66,14 @@ function setup(loader, resources) {
   people.x = 32;
   people.ay = GRAVITY_ACCELERATION;
 
-  soft_platforms = Array(3).fill().map(
-    () => new PIXI.Sprite(resources.soft_platform.texture)
-  );
-  let hard_platforms = Array(3).fill().map(
-    () => new PIXI.Sprite(resources.hard_platform.texture)
-  );
-  let bricks = Array(2).fill().map(
-    () => new PIXI.Sprite(resources.brick.texture)
-  );
+  const layout_toml_text = fs.readFileSync(
+    path.join(resources_dir, "layout.toml"), "utf-8"
+  )
 
-  // Layout the objects.
-  soft_platforms[0].x = 32;
-  soft_platforms[0].y = 40;
-  soft_platforms[1].x = 32;
-  soft_platforms[1].y = 72;
-  soft_platforms[2].x = 96;
-  soft_platforms[2].y = 40;
-
-  hard_platforms[0].x = 32;
-  hard_platforms[0].y = 96;
-  hard_platforms[1].x = 96;
-  hard_platforms[1].y = 96;
-  hard_platforms[2].x = 96;
-  hard_platforms[2].y = 72;
-
-  bricks[0].x = 0;
-  bricks[0].y = 96 - (32 - 8);
-  bricks[1].x = 128;
-  bricks[1].y = 96 - (32 - 8);
-
-  // Set tints.
-  let setTint = (sprite) => {sprite.tint = OBJECT_TINT};
-
-  soft_platforms.forEach(setTint);
-  hard_platforms.forEach(setTint);
-  bricks.forEach(setTint);
+  const objects = layout(layout_toml_text, resources);
+  soft_platforms = objects.soft_platforms;
+  let hard_platforms = objects.hard_platforms;
+  let bricks = objects.bricks;
 
   // Create boundaries
   let boundaries = makeBoundaries(WIDTH, HEIGHT);

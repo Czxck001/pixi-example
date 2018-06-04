@@ -1,0 +1,11 @@
+[soft_platform]
+locations = [ [32, 40], [32, 72], [96, 40] ]
+tint = "0xa3a3c2"
+
+[hard_platform]
+locations = [ [32, 96], [96, 96], [96, 72] ]
+tint = "0xa3a3c2"
+
+[brick]
+locations = [ [0, 72], [128, 72] ]
+tint = "0xa3a3c2"

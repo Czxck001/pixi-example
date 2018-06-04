@@ -57,7 +57,7 @@ Use ↓ to drop off from soft platforms.
 ## TODO list (updating)
 
 - [ ] Turn the face around.
-- [ ] Layout objects in scene by configuration.
+- [x] Layout objects in scene by configuration.
 - [ ] Background music.
 - [ ] Separate physics and sprite rendering.
 - [ ] Shooting bullets.

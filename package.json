@@ -17,7 +17,9 @@
   ],
   "author": "Czxck001",
   "license": "CC0-1.0",
-  "devDependencies": {
-    "electron": "^2.0.0"
+  "devDependencies": {},
+  "dependencies": {
+    "electron": "^2.0.0",
+    "toml": "^2.3.3"
   }
 }
