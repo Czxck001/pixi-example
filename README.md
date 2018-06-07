@@ -51,7 +51,7 @@ Use ↓ to drop off from soft platforms.
 ## Features
 
 - Simple physical engine described by acceleration, velocity and position.
-- Bug-free collision detection.
+- Bug-free collision detection (using [the Visitor](https://refactoring.guru/design-patterns/visitor) pattern).
 - Soft platforms and drop-off.
 
 ## TODO list (updating)
@@ -59,5 +59,5 @@ Use ↓ to drop off from soft platforms.
 - [ ] Turn the face around.
 - [x] Layout objects in scene by configuration.
 - [ ] Background music.
-- [ ] Separate physics and sprite rendering.
+- [x] Separate physics and sprite rendering.
 - [ ] Shooting bullets.
