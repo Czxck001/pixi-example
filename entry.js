@@ -4,11 +4,8 @@ const path = require("path");
 
 const PIXI = require('pixi.js')
 
+const { Player } = require("./core/player.js")
 const { keyboard } = require("./utils/keyboard");
-const {
-  hitTheTop, onTopOf, hitTheBottom, hitTheLeft, hitTheRight
-} = require("./utils/collide.js");
-const { equipPhysics } = require("./utils/physics.js");
 const { layout, makeBoundaries } = require("./utils/scroll.js");
 
 
@@ -20,22 +17,15 @@ const WIDTH = 160, HEIGHT = 104;
 
 const BACKGROUND_COLOR = 0x1f3d7a;
 const OBJECT_TINT = 0xa3a3c2;
+const KEYMAP = { left: 37, up: 38, right: 39, down: 40 };
 
 // Using global variables to accelerate the deveoplment process.
-// TODO: Modulize to avoid using global variables.
-
 let app = new PIXI.Application({
   width: WIDTH, height: HEIGHT,
   antialias: false, transparent: false, resolution: 2,
   backgroundColor: BACKGROUND_COLOR
 });
 window.document.body.appendChild(app.view);
-
-// Core objects in scene.
-let people = undefined;
-let soft_platforms = undefined;
-let platforms = undefined;
-let blocks = undefined;
 
 // Resources
 const resources_dir = "resources"
@@ -55,10 +45,8 @@ PIXI.loader
 // This `setup` function will run when the image has loaded
 function setup(loader, resources) {
   // Create the sprites from the texture
-  people = new PIXI.Sprite(resources.people.texture);
+  let people = new Player(new PIXI.Sprite(resources.people.texture));
 
-  // Make people a "physics" one.
-  equipPhysics(people);
   people.x = 32;
   people.ay = GRAVITY_ACCELERATION;
 
@@ -67,7 +55,8 @@ function setup(loader, resources) {
   )
 
   const objects = layout(layout_toml_text, resources);
-  soft_platforms = objects.soft_platforms;
+
+  let soft_platforms = objects.soft_platforms;
   let hard_platforms = objects.hard_platforms;
   let bricks = objects.bricks;
 
@@ -75,11 +64,14 @@ function setup(loader, resources) {
   let boundaries = makeBoundaries(WIDTH, HEIGHT);
 
   // Assign core global collections
-  blocks = hard_platforms.concat(bricks).concat(boundaries);
-  platforms = soft_platforms.concat(blocks);
+  let blocks = hard_platforms.concat(bricks).concat(boundaries);
+
+  // Bind people with environment
+  people.soft_platforms = soft_platforms;
+  people.blocks = blocks;
 
   // Add the spritse to the stage
-  let sprites = [people]
+  let sprites = [people.sprite]
     .concat(soft_platforms)
     .concat(hard_platforms)
     .concat(bricks)
@@ -88,107 +80,53 @@ function setup(loader, resources) {
     app.stage.addChild(sprite);
   }
 
-  // Bind the hero with the keyboard.
-  setupKeys(people);
+  // Bind the player with the keyboard.
+  setupKeys(people, KEYMAP);
 
   // Enter game loop.
-  gameLoop();
+  gameLoop(people);
 }
 
-function gameLoop() {
-  requestAnimationFrame(gameLoop);
-  updateState();
+function gameLoop(people) {
+  requestAnimationFrame(() => gameLoop(people));
+  people.updateState();
   app.render();
 }
 
-function updateState() {
-  people.updateV();
-
-  const p = people;
-
-  // Delayed prediction, waiting for the fix by collision check.
-  const pt = people.predict();
-
-  // Check collection in each direction.
-  // If collision is found in one direction,
-  // the prediction will be fixed at once.
-
-  // TODO: Simplify the collection fix by polymorphism.
-  if (people.toFall) {
-    people.toFall = false;
-  } else {
-    for (let bottom of platforms) {
-      if (hitTheTop(p, pt, bottom)) {
-        pt.y = bottom.y - pt.height;
-        pt.vy = 0;
-      }
-    }
-  }
-
-  for (let top of blocks) {
-    if (hitTheBottom(p, pt, top)) {
-      pt.y = top.y + top.height;
-      pt.vy = 0;
-    }
-  }
-
-  for (let right of blocks) {
-    if (hitTheLeft(p, pt, right)) {
-      pt.x = right.x - pt.width;
-    }
-  }
-
-  for (let left of blocks) {
-    if (hitTheRight(p, pt, left)) {
-      pt.x = left.x + left.width;
-    }
-  }
-
-  p.update(pt);
-}
-
-function onTheSoftGround() {
-  return soft_platforms.some(platform => onTopOf(people, platform));
-}
-
-function onTheGround() {
-  return platforms.some(platform => onTopOf(people, platform));
-}
-
-function setupKeys(p) {
-  const left = keyboard(37),
-        up = keyboard(38),
-        right = keyboard(39),
-        down = keyboard(40);
+function setupKeys(player, keymap) {
+  const left = keyboard(keymap.left),
+        up = keyboard(keymap.up),
+        right = keyboard(keymap.right),
+        down = keyboard(keymap.down);
 
   left.press = () => {
-    p.vx = -HORIZONTAL_SPEED;
+    player.vx = -HORIZONTAL_SPEED;
   }
 
   left.release = () => {
     if (!right.isDown) {
-      p.vx = 0;
+      player.vx = 0;
     }
   };
 
   right.press = () => {
-    p.vx = HORIZONTAL_SPEED;
+    player.vx = HORIZONTAL_SPEED;
   }
 
   right.release = () => {
     if (!left.isDown) {
-      p.vx = 0;
+      player.vx = 0;
     }
   };
   up.press = () => {
-    if (onTheGround()) {
-      p.vy = -JUMP_INITIAL_SPEED;
+    if (player.onTheGround()) {
+      player.vy = -JUMP_INITIAL_SPEED;
     }
   }
 
   down.press = () => {
-    if (onTheSoftGround()) {
-      p.toFall = true;
+    if (player.onTheSoftGround()) {
+      player.toFall = true;
     }
   }
 }

@@ -1,6 +1,3 @@
-exports.equipPhysics = equipPhysics;
-
-
 function updateV() {
   this.vx += this.ax;
   this.vy += this.ay;
@@ -36,3 +33,17 @@ function equipPhysics(a) {
   a.predict = predict;
   a.update = update;
 }
+exports.equipPhysics = equipPhysics;
+
+
+class PhysicalObject {
+  constructor(sprite) {
+    this.sprite = sprite;
+    this.x = sprite.x;
+    this.y = sprite.y;
+    this.width = sprite.width;
+    this.height = sprite.height;
+    equipPhysics(this);
+  }
+}
+exports.PhysicalObject = PhysicalObject
