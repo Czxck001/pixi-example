@@ -20,6 +20,7 @@
   "devDependencies": {},
   "dependencies": {
     "electron": "^2.0.0",
+    "pixi.js": "^4.8.1",
     "toml": "^2.3.3"
   }
 }

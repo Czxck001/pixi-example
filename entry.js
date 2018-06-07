@@ -2,6 +2,8 @@
 const fs = require("fs");
 const path = require("path");
 
+const PIXI = require('pixi.js')
+
 const { keyboard } = require("./utils/keyboard");
 const {
   hitTheTop, onTopOf, hitTheBottom, hitTheLeft, hitTheRight
@@ -22,18 +24,12 @@ const OBJECT_TINT = 0xa3a3c2;
 // Using global variables to accelerate the deveoplment process.
 // TODO: Modulize to avoid using global variables.
 
-// Create a container object called the `stage`
-let stage = new PIXI.Container();
-
-// Create the renderer
-let renderer = PIXI.autoDetectRenderer(
-  WIDTH, HEIGHT,
-  {antialias: false, transparent: false, resolution: 2,
-   backgroundColor: BACKGROUND_COLOR}
-);
-
-// Add the canvas to the HTML document
-document.body.appendChild(renderer.view);
+let app = new PIXI.Application({
+  width: WIDTH, height: HEIGHT,
+  antialias: false, transparent: false, resolution: 2,
+  backgroundColor: BACKGROUND_COLOR
+});
+window.document.body.appendChild(app.view);
 
 // Core objects in scene.
 let people = undefined;
@@ -89,7 +85,7 @@ function setup(loader, resources) {
     .concat(bricks)
 
   for (let sprite of sprites) {
-    stage.addChild(sprite);
+    app.stage.addChild(sprite);
   }
 
   // Bind the hero with the keyboard.
@@ -102,7 +98,7 @@ function setup(loader, resources) {
 function gameLoop() {
   requestAnimationFrame(gameLoop);
   updateState();
-  renderer.render(stage);
+  app.render();
 }
 
 function updateState() {
