@@ -1,8 +1,8 @@
 const {
   hitTheTop, onTopOf, hitTheBottom, hitTheLeft, hitTheRight
-} = require("../utils/collide.js");
+} = require("./collide.js");
 
-const { PhysicalObject } = require("../utils/physics.js");
+const { PhysicalObject } = require("./physics.js");
 
 
 class Player extends PhysicalObject {
