@@ -1,26 +1,11 @@
-function updateV() {
-  this.vx += this.ax;
-  this.vy += this.ay;
+function takeSprite(a, sprite) {
+  a.sprite = sprite;
+  a.x = sprite.x;
+  a.y = sprite.y;
+  a.width = sprite.width;
+  a.height = sprite.height;
 }
-
-function predict() {
-  let next = {};
-  next.x = this.x + this.vx;
-  next.y = this.y + this.vy;
-  next.width = this.width;
-  next.height = this.height;
-  next.vx = this.vx;
-  next.vy = this.vy;
-  return next;
-}
-
-function update(predicted) {
-  this.x = predicted.x;
-  this.y = predicted.y;
-  this.vx = predicted.vx;
-  this.vy = predicted.vy;
-}
-
+exports.takeSprite = takeSprite;
 
 function equipPhysics(a) {
   a.ax = 0;
@@ -35,15 +20,51 @@ function equipPhysics(a) {
 }
 exports.equipPhysics = equipPhysics;
 
-
 class PhysicalObject {
-  constructor(sprite) {
-    this.sprite = sprite;
-    this.x = sprite.x;
-    this.y = sprite.y;
-    this.width = sprite.width;
-    this.height = sprite.height;
-    equipPhysics(this);
+  static fromSprite(sprite) {
+    let p = new PhysicalObject();
+    takeSprite(p, sprite);
+    return p;
+  }
+
+  constructor() {
+    this.x = 0;
+    this.y = 0;
+    this.width = 0;
+    this.height = 0;
+
+    this.vx = 0;
+    this.vy = 0;
+
+    this.ax = 0;
+    this.ay = 0;
+  }
+
+  updateV() {
+    this.vx += this.ax;
+    this.vy += this.ay;
+  }
+
+  updateSprite() {
+    this.sprite.x = this.x;
+    this.sprite.y = this.y;
+  }
+
+  predict() {
+    let next = {...this};
+    next.x = this.x + this.vx;
+    next.y = this.y + this.vy;
+    return next;
+  }
+
+  fixBy(fix) {
+    for (key in fix) {
+      this[key] += fix[key];
+    }
+  }
+
+  update(pt) {
+    Object.assign(this, pt);
   }
 }
 exports.PhysicalObject = PhysicalObject

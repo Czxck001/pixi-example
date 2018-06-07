@@ -5,6 +5,8 @@ const path = require("path");
 const PIXI = require('pixi.js')
 
 const { Player } = require("./core/player.js")
+const { SoftPlatform, Block } = require("./core/platform.js")
+const { Scene } = require("./core/scene.js")
 const { keyboard } = require("./utils/keyboard");
 const { layout, makeBoundaries } = require("./utils/scroll.js");
 
@@ -45,7 +47,7 @@ PIXI.loader
 // This `setup` function will run when the image has loaded
 function setup(loader, resources) {
   // Create the sprites from the texture
-  let people = new Player(new PIXI.Sprite(resources.people.texture));
+  const people = Player.fromSprite(new PIXI.Sprite(resources.people.texture));
 
   people.x = 32;
   people.ay = GRAVITY_ACCELERATION;
@@ -54,27 +56,30 @@ function setup(loader, resources) {
     path.join(resources_dir, "layout.toml"), "utf-8"
   )
 
-  const objects = layout(layout_toml_text, resources);
-
-  let soft_platforms = objects.soft_platforms;
-  let hard_platforms = objects.hard_platforms;
-  let bricks = objects.bricks;
+  const environment = layout(layout_toml_text, resources);
 
   // Create boundaries
   let boundaries = makeBoundaries(WIDTH, HEIGHT);
 
   // Assign core global collections
-  let blocks = hard_platforms.concat(bricks).concat(boundaries);
+  let blocks = environment.hard_platforms
+    .concat(environment.bricks)
+    .concat(boundaries)
+    .map(sprite => Block.fromSprite(sprite));
 
-  // Bind people with environment
-  people.soft_platforms = soft_platforms;
-  people.blocks = blocks;
+  let soft_platforms = environment.soft_platforms.map(
+    sprite => SoftPlatform.fromSprite(sprite)
+  );
 
-  // Add the spritse to the stage
-  let sprites = [people.sprite]
-    .concat(soft_platforms)
-    .concat(hard_platforms)
-    .concat(bricks)
+  let scene = new Scene({
+    physicals: [people],
+    platforms: blocks.concat(soft_platforms)
+  });
+
+  let sprites = [people.sprite];
+  for (const [key, subsprites] of Object.entries(environment)) {
+    sprites = sprites.concat(subsprites);
+  }
 
   for (let sprite of sprites) {
     app.stage.addChild(sprite);
@@ -83,13 +88,14 @@ function setup(loader, resources) {
   // Bind the player with the keyboard.
   setupKeys(people, KEYMAP);
 
+  people.toFall = true;
   // Enter game loop.
-  gameLoop(people);
+  gameLoop(scene);
 }
 
-function gameLoop(people) {
-  requestAnimationFrame(() => gameLoop(people));
-  people.updateState();
+function gameLoop(scene) {
+  requestAnimationFrame(() => gameLoop(scene));
+  scene.updateState();
   app.render();
 }
 
@@ -119,13 +125,13 @@ function setupKeys(player, keymap) {
     }
   };
   up.press = () => {
-    if (player.onTheGround()) {
+    if (player.isOnTheGround()) {
       player.vy = -JUMP_INITIAL_SPEED;
     }
   }
 
   down.press = () => {
-    if (player.onTheSoftGround()) {
+    if (player.isOnTheSoftGround()) {
       player.toFall = true;
     }
   }
