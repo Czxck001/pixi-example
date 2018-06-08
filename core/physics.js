@@ -27,6 +27,12 @@ class PhysicalObject {
     return p;
   }
 
+  updateState() {
+    this.updateV();
+    this.updatePhysicalState();
+    this.updateSprite();
+  }
+
   constructor() {
     this.x = 0;
     this.y = 0;

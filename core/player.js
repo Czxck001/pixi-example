@@ -8,12 +8,6 @@ class Player extends PhysicalObject {
     return p;
   }
 
-  updateState() {
-    this.updateV();
-    this.updatePhysicalState();
-    this.updateSprite();
-  }
-
   isOnTheGround() {
     return this.scene.platforms.some(p => p.acceptIsOnTheGround(this));
   }
