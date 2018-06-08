@@ -21,7 +21,7 @@ const OBJECT_TINT = 0xa3a3c2;
 const KEYMAP = { left: 37, up: 38, right: 39, down: 40 };
 
 // Using global variables to accelerate the deveoplment process.
-let app = new PIXI.Application({
+const app = new PIXI.Application({
   width: WIDTH, height: HEIGHT,
   antialias: false, transparent: false, resolution: 2,
   backgroundColor: BACKGROUND_COLOR
@@ -57,25 +57,25 @@ function setup(loader, resources) {
   const environment = layout(layout_toml_text, resources);
 
   // Boundaries are blocks
-  let boundaries = makeBoundaries(WIDTH, HEIGHT);
+  const boundaries = makeBoundaries(WIDTH, HEIGHT);
 
   // Gather block objects
-  let blocks = environment.hard_platforms
+  const blocks = environment.hard_platforms
     .concat(environment.bricks)
     .map(sprite => Block.fromSprite(sprite))
     .concat(boundaries);
 
-  let soft_platforms = environment.soft_platforms.map(
+  const soft_platforms = environment.soft_platforms.map(
     sprite => SoftPlatform.fromSprite(sprite)
   );
 
-  let scene = new Scene({
+  const scene = new Scene({
     physicals: [people],
     platforms: blocks.concat(soft_platforms)
   });
 
   // Add sprites to scene
-  for (let sprite of scene.sprites) {
+  for (const sprite of scene.sprites) {
     app.stage.addChild(sprite);
   }
 

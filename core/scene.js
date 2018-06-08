@@ -1,14 +1,14 @@
 class Scene {
   constructor(options) {
-    let physicals = options.physicals || [];
-    let platforms = options.platforms || [];
+    const physicals = options.physicals || [];
+    const platforms = options.platforms || [];
 
     this.physicals = [];
     this.platforms = [];
-    for (let physical of physicals) {
+    for (const physical of physicals) {
       this.addPhysical(physical);
     }
-    for (let platform of platforms) {
+    for (const platform of platforms) {
       this.addPlatform(platform);
     }
   }
@@ -30,7 +30,7 @@ class Scene {
   }
 
   updateState() {
-    for (let physical of this.physicals) {
+    for (const physical of this.physicals) {
       physical.updateState();
     }
   }

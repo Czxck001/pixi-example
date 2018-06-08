@@ -22,7 +22,7 @@ exports.equipPhysics = equipPhysics;
 
 class PhysicalObject {
   static fromSprite(sprite) {
-    let p = new PhysicalObject();
+    const p = new PhysicalObject();
     takeSprite(p, sprite);
     return p;
   }
@@ -57,14 +57,14 @@ class PhysicalObject {
   }
 
   predict() {
-    let next = {...this};
+    const next = {...this};
     next.x = this.x + this.vx;
     next.y = this.y + this.vy;
     return next;
   }
 
   fixBy(fix) {
-    for (key in fix) {
+    for (const key in fix) {
       this[key] += fix[key];
     }
   }

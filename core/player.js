@@ -4,7 +4,7 @@ const { keyboard } = require("../utils/keyboard");
 
 class Player extends PhysicalObject {
   static fromSprite(sprite) {
-    let p = new Player();
+    const p = new Player();
     takeSprite(p, sprite);
     return p;
   }
@@ -21,7 +21,7 @@ class Player extends PhysicalObject {
     // Delayed prediction, waiting for the fix by collision check.
     const pt = this.predict();
 
-    for (let platform of this.scene.platforms) {
+    for (const platform of this.scene.platforms) {
       // Double dispatch here (the Visitor Pattern)
       platform.acceptCollision(this, pt);
     }

@@ -21,7 +21,7 @@ class Platform {
 
 class SoftPlatform extends Platform {
   static fromSprite(sprite) {
-    let sp = new SoftPlatform();
+    const sp = new SoftPlatform();
     takeSprite(sp, sprite);
     return sp;
   }
@@ -44,7 +44,7 @@ exports.SoftPlatform = SoftPlatform;
 
 class Block extends Platform {
   static fromSprite(sprite) {
-    let sp = new Block();
+    const sp = new Block();
     takeSprite(sp, sprite);
     return sp;
   }
@@ -76,7 +76,7 @@ exports.Block = Block;
 
 
 function makeBoundaries(width, height) {
-  let boundaries = [];
+  const boundaries = [];
 
   boundaries.push(new Block({x: 0, width: width, y: 0, height: 0}));  // u
   boundaries.push(new Block({x: 0, width: 0, y: 0, height: height})); // l

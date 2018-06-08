@@ -1,7 +1,7 @@
 exports.keyboard = keyboard;
 
 function keyboard(keyCode) {
-  let key = {};
+  const key = {};
   key.code = keyCode;
   key.isDown = false;
   key.isUp = true;

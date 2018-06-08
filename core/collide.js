@@ -6,7 +6,7 @@ exports.hitTheRight = takeBoxified(hitTheRight);
 
 function boxify(sprite) {
   // Boxify the sprite so that we can handily detect box collision
-  let box = {};
+  const box = {};
 
   box.l = sprite.x;
   box.r = sprite.x + sprite.width;
@@ -20,7 +20,7 @@ function takeBoxified(func) {
   // Wrap a function taking sprite-like (x-width, y-height) object
   // into a function taking boxes (l, r, u, d).
   return (...params) => {
-    let boxifieds = params.map(boxify);
+    const boxifieds = params.map(boxify);
     return func(...boxifieds);
   }
 }
