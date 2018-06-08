@@ -1,5 +1,5 @@
 const { PhysicalObject, takeSprite } = require("./physics.js");
-const { keyboard } = require("./utils/keyboard");
+const { keyboard } = require("../utils/keyboard");
 
 
 class Player extends PhysicalObject {
