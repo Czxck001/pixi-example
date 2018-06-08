@@ -4,10 +4,9 @@ const path = require("path");
 
 const PIXI = require('pixi.js')
 
-const { Player } = require("./core/player.js")
+const { Player, setupKeys } = require("./core/player.js")
 const { SoftPlatform, Block, makeBoundaries } = require("./core/platform.js")
 const { Scene } = require("./core/scene.js")
-const { keyboard } = require("./utils/keyboard");
 const { layout } = require("./utils/scroll.js");
 
 
@@ -87,42 +86,4 @@ function setup(loader, resources) {
   app.ticker.add(() => {
     scene.updateState();
   })
-}
-
-function setupKeys(player, keymap) {
-  const left = keyboard(keymap.left),
-        up = keyboard(keymap.up),
-        right = keyboard(keymap.right),
-        down = keyboard(keymap.down);
-
-  left.press = () => {
-    player.vx = -HORIZONTAL_SPEED;
-  }
-
-  left.release = () => {
-    if (!right.isDown) {
-      player.vx = 0;
-    }
-  };
-
-  right.press = () => {
-    player.vx = HORIZONTAL_SPEED;
-  }
-
-  right.release = () => {
-    if (!left.isDown) {
-      player.vx = 0;
-    }
-  };
-  up.press = () => {
-    if (player.isOnTheGround()) {
-      player.vy = -JUMP_INITIAL_SPEED;
-    }
-  }
-
-  down.press = () => {
-    if (player.isOnTheSoftGround()) {
-      player.toFall = true;
-    }
-  }
 }

@@ -1,4 +1,5 @@
 const { PhysicalObject, takeSprite } = require("./physics.js");
+const { keyboard } = require("./utils/keyboard");
 
 
 class Player extends PhysicalObject {
@@ -29,3 +30,42 @@ class Player extends PhysicalObject {
   }
 }
 exports.Player = Player;
+
+function setupKeys(player, keymap) {
+  const left = keyboard(keymap.left),
+        up = keyboard(keymap.up),
+        right = keyboard(keymap.right),
+        down = keyboard(keymap.down);
+
+  left.press = () => {
+    player.vx = -HORIZONTAL_SPEED;
+  }
+
+  left.release = () => {
+    if (!right.isDown) {
+      player.vx = 0;
+    }
+  };
+
+  right.press = () => {
+    player.vx = HORIZONTAL_SPEED;
+  }
+
+  right.release = () => {
+    if (!left.isDown) {
+      player.vx = 0;
+    }
+  };
+  up.press = () => {
+    if (player.isOnTheGround()) {
+      player.vy = -JUMP_INITIAL_SPEED;
+    }
+  }
+
+  down.press = () => {
+    if (player.isOnTheSoftGround()) {
+      player.toFall = true;
+    }
+  }
+}
+exports.setupKeys = setupKeys;
