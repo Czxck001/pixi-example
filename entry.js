@@ -80,7 +80,10 @@ function setup(loader, resources) {
   }
 
   // Bind the player with the keyboard.
-  setupKeys(people, KEYMAP);
+  setupKeys(people, KEYMAP, {
+    horizontal: HORIZONTAL_SPEED,
+    jump: JUMP_INITIAL_SPEED
+  });
 
   // Enter game loop using app.ticker
   app.ticker.add(() => {

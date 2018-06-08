@@ -31,14 +31,14 @@ class Player extends PhysicalObject {
 }
 exports.Player = Player;
 
-function setupKeys(player, keymap) {
+function setupKeys(player, keymap, speeds) {
   const left = keyboard(keymap.left),
         up = keyboard(keymap.up),
         right = keyboard(keymap.right),
         down = keyboard(keymap.down);
 
   left.press = () => {
-    player.vx = -HORIZONTAL_SPEED;
+    player.vx = -speeds.horizontal;
   }
 
   left.release = () => {
@@ -48,7 +48,7 @@ function setupKeys(player, keymap) {
   };
 
   right.press = () => {
-    player.vx = HORIZONTAL_SPEED;
+    player.vx = speeds.horizontal;
   }
 
   right.release = () => {
@@ -58,7 +58,7 @@ function setupKeys(player, keymap) {
   };
   up.press = () => {
     if (player.isOnTheGround()) {
-      player.vy = -JUMP_INITIAL_SPEED;
+      player.vy = -speeds.jump;
     }
   }
 
