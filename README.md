@@ -56,8 +56,9 @@ Use ↓ to drop off from soft platforms.
 
 ## TODO list (updating)
 
-- [ ] Turn the face around.
+- [x] Turn the face around.
 - [x] Layout objects in scene by configuration.
 - [ ] Background music.
 - [x] Separate physics and sprite rendering.
 - [ ] Shooting bullets.
+- [ ] Advanced confuguration to handling tilemap.
