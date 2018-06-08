@@ -4,9 +4,10 @@ const path = require("path");
 
 const PIXI = require('pixi.js')
 
-const { Player, setupKeys } = require("./core/player.js")
-const { SoftPlatform, Block, makeBoundaries } = require("./core/platform.js")
-const { Scene } = require("./core/scene.js")
+const { StatefulSprite } = require('./utils/stateful.js');
+const { Player, setupKeys } = require("./core/player.js");
+const { SoftPlatform, Block, makeBoundaries } = require("./core/platform.js");
+const { Scene } = require("./core/scene.js");
 const { layout } = require("./utils/scroll.js");
 
 
@@ -45,7 +46,18 @@ PIXI.loader
 
 // This `setup` function will run when the image has loaded
 function setup(loader, resources) {
-  const people = Player.fromSprite(new PIXI.Sprite(resources.people.texture));
+  const people = Player.fromSprite(
+    new StatefulSprite({
+      right: new PIXI.Sprite(new PIXI.Texture(
+        resources.people.texture,
+        {x: 0, y: 0, width: 8, height: 16}
+      )),
+      left: new PIXI.Sprite(new PIXI.Texture(
+        resources.people.texture,
+        {x: 8, y: 0, width: 8, height: 16}
+      ))
+    }, 'right')
+  );
 
   people.x = 32;
   people.ay = GRAVITY_ACCELERATION;

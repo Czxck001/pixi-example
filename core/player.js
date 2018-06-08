@@ -39,6 +39,7 @@ function setupKeys(player, keymap, speeds) {
 
   left.press = () => {
     player.vx = -speeds.horizontal;
+    player.sprite.status = 'left';
   }
 
   left.release = () => {
@@ -49,6 +50,7 @@ function setupKeys(player, keymap, speeds) {
 
   right.press = () => {
     player.vx = speeds.horizontal;
+    player.sprite.status = 'right';
   }
 
   right.release = () => {
