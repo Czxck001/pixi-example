@@ -46,7 +46,7 @@ Use ← and → to move horizontally.
 
 Use ↑ to jump.
 
-Use ↓ to drop off from soft platforms.
+Use ↓ to drop off from soft platforms, or sit at blocks.
 
 ## Features
 
@@ -62,3 +62,4 @@ Use ↓ to drop off from soft platforms.
 - [x] Separate physics and sprite rendering.
 - [ ] Shooting bullets.
 - [ ] Advanced confuguration to handling tilemap.
+- [ ] Complex player status (airborn detection, etc.)
