@@ -46,7 +46,6 @@ PIXI.loader
 
 // This `setup` function will run when the image has loaded
 function setup(loader, resources) {
-  // Create the sprites from the texture
   const people = Player.fromSprite(new PIXI.Sprite(resources.people.texture));
 
   people.x = 32;
@@ -58,7 +57,7 @@ function setup(loader, resources) {
 
   const environment = layout(layout_toml_text, resources);
 
-  // Create boundaries
+  // Boundaries are blocks
   let boundaries = makeBoundaries(WIDTH, HEIGHT);
 
   // Gather block objects
@@ -67,7 +66,6 @@ function setup(loader, resources) {
     .map(sprite => Block.fromSprite(sprite))
     .concat(boundaries);
 
-  // Create soft platforms from sprites
   let soft_platforms = environment.soft_platforms.map(
     sprite => SoftPlatform.fromSprite(sprite)
   );
@@ -77,11 +75,7 @@ function setup(loader, resources) {
     platforms: blocks.concat(soft_platforms)
   });
 
-  //let sprites = [people.sprite];
-  //for (const [key, subsprites] of Object.entries(environment)) {
-    //sprites = sprites.concat(subsprites);
-  //}
-
+  // Add sprites to scene
   for (let sprite of scene.sprites) {
     app.stage.addChild(sprite);
   }
@@ -89,14 +83,10 @@ function setup(loader, resources) {
   // Bind the player with the keyboard.
   setupKeys(people, KEYMAP);
 
-  // Enter game loop.
-  gameLoop(scene);
-}
-
-function gameLoop(scene) {
-  requestAnimationFrame(() => gameLoop(scene));
-  scene.updateState();
-  app.render();
+  // Enter game loop using app.ticker
+  app.ticker.add(() => {
+    scene.updateState();
+  })
 }
 
 function setupKeys(player, keymap) {
