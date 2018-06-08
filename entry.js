@@ -5,10 +5,10 @@ const path = require("path");
 const PIXI = require('pixi.js')
 
 const { Player } = require("./core/player.js")
-const { SoftPlatform, Block } = require("./core/platform.js")
+const { SoftPlatform, Block, makeBoundaries } = require("./core/platform.js")
 const { Scene } = require("./core/scene.js")
 const { keyboard } = require("./utils/keyboard");
-const { layout, makeBoundaries } = require("./utils/scroll.js");
+const { layout } = require("./utils/scroll.js");
 
 
 // Using global constants to set the parameters of scene in agility.
@@ -61,12 +61,13 @@ function setup(loader, resources) {
   // Create boundaries
   let boundaries = makeBoundaries(WIDTH, HEIGHT);
 
-  // Assign core global collections
+  // Gather block objects
   let blocks = environment.hard_platforms
     .concat(environment.bricks)
-    .concat(boundaries)
-    .map(sprite => Block.fromSprite(sprite));
+    .map(sprite => Block.fromSprite(sprite))
+    .concat(boundaries);
 
+  // Create soft platforms from sprites
   let soft_platforms = environment.soft_platforms.map(
     sprite => SoftPlatform.fromSprite(sprite)
   );
@@ -76,19 +77,18 @@ function setup(loader, resources) {
     platforms: blocks.concat(soft_platforms)
   });
 
-  let sprites = [people.sprite];
-  for (const [key, subsprites] of Object.entries(environment)) {
-    sprites = sprites.concat(subsprites);
-  }
+  //let sprites = [people.sprite];
+  //for (const [key, subsprites] of Object.entries(environment)) {
+    //sprites = sprites.concat(subsprites);
+  //}
 
-  for (let sprite of sprites) {
+  for (let sprite of scene.sprites) {
     app.stage.addChild(sprite);
   }
 
   // Bind the player with the keyboard.
   setupKeys(people, KEYMAP);
 
-  people.toFall = true;
   // Enter game loop.
   gameLoop(scene);
 }
