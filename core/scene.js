@@ -14,7 +14,7 @@ class Scene {
   }
 
   get sprites() {
-    return this.physicals.concat(this.platforms)
+    return this.platforms.concat(this.physicals)
       .filter(obj => obj.sprite)
       .map(obj => obj.sprite);
   }
