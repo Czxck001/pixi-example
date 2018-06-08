@@ -30,7 +30,7 @@ class PhysicalObject {
   updateState() {
     this.updateV();
     this.updatePhysicalState();
-    this.updateSprite();
+    this.updateSpriteXY();
   }
 
   constructor() {
@@ -51,9 +51,14 @@ class PhysicalObject {
     this.vy += this.ay;
   }
 
-  updateSprite() {
+  updateSpriteXY() {
     this.sprite.x = this.x;
     this.sprite.y = this.y;
+  }
+
+  updateWHFromSprite() {
+    this.width = this.sprite.width;
+    this.height = this.sprite.height;
   }
 
   predict() {

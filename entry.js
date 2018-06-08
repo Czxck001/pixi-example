@@ -21,6 +21,9 @@ const BACKGROUND_COLOR = 0x1f3d7a;
 const OBJECT_TINT = 0xa3a3c2;
 const KEYMAP = { left: 37, up: 38, right: 39, down: 40 };
 
+const DEBUG_MODE = false;
+const DEBUG_BOX_COLOR = 0xffd900;
+
 // Using global variables to accelerate the deveoplment process.
 const app = new PIXI.Application({
   width: WIDTH, height: HEIGHT,
@@ -46,18 +49,27 @@ PIXI.loader
 
 // This `setup` function will run when the image has loaded
 function setup(loader, resources) {
-  const people = Player.fromSprite(
-    new StatefulSprite({
-      right: new PIXI.Sprite(new PIXI.Texture(
-        resources.people.texture,
-        {x: 0, y: 0, width: 8, height: 16}
-      )),
-      left: new PIXI.Sprite(new PIXI.Texture(
-        resources.people.texture,
-        {x: 8, y: 0, width: 8, height: 16}
-      ))
-    }, 'right')
-  );
+
+  const stateful_sprite = new StatefulSprite({
+    right_stand: new PIXI.Sprite(new PIXI.Texture(
+      resources.people.texture,
+      {x: 0, y: 0, width: 8, height: 16}
+    )),
+    left_stand: new PIXI.Sprite(new PIXI.Texture(
+      resources.people.texture,
+      {x: 8, y: 0, width: 8, height: 16}
+    )),
+    right_sit: new PIXI.Sprite(new PIXI.Texture(
+      resources.people.texture,
+      {x: 16, y: 0, width: 8, height: 8}
+    )),
+    left_sit: new PIXI.Sprite(new PIXI.Texture(
+      resources.people.texture,
+      {x: 16, y: 8, width: 8, height: 8}
+    ))
+  }, 'right_stand');
+
+  const people = Player.fromSprite(stateful_sprite);
 
   people.x = 32;
   people.ay = GRAVITY_ACCELERATION;
@@ -91,6 +103,9 @@ function setup(loader, resources) {
     app.stage.addChild(sprite);
   }
 
+  const graphics = new PIXI.Graphics();
+  app.stage.addChild(graphics);
+
   // Bind the player with the keyboard.
   setupKeys(people, KEYMAP, {
     horizontal: HORIZONTAL_SPEED,
@@ -100,5 +115,15 @@ function setup(loader, resources) {
   // Enter game loop using app.ticker
   app.ticker.add(() => {
     scene.updateState();
+    if (DEBUG_MODE) {
+      graphics.clear();
+      graphics.lineStyle(1, DEBUG_BOX_COLOR, 1);
+      graphics.drawRect(
+        stateful_sprite.x,
+        stateful_sprite.y,
+        stateful_sprite.width,
+        stateful_sprite.height
+      );
+    }
   })
 }
