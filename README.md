@@ -2,7 +2,7 @@
 
 My first game project using [PIXI.js](http://www.pixijs.com/). Currently it's an old-styled and incredibly ugly platformer.
 
- <img align="right" src="imgs/demo-scene.png">
+ <img align="right" src="docs/imgs/demo-scene.png">
 
 ## Why game?
 
