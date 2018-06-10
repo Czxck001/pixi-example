@@ -20,6 +20,10 @@ Now that I can code and have already become a software engineer, I feel extremel
 
 Actually, PIXI.js is not a game engine or game IDE. It is merely a wrapper of WebGL for HTML5 multimedia applications. I choose it because it is super clean and simple. It only renders the sprites and handles the resources. It won't limit my way to implement a game by adding tons of properties for stupid usages.
 
+## Design documentations
+
+[State and Stage](docs/state-and-stage.md)
+
 ## Prerequisites
 
 [npm](https://www.npmjs.com/)
